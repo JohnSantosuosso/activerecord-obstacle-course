@@ -20,6 +20,7 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+      Order.where(id: @user_3)
     # ------------------------------------------------------------
 
     # Expectation
@@ -39,6 +40,11 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    orders = Order.order(amount: :desc)
+    # ------------------------------------------------------------
+
+    #SQL
+
     # ------------------------------------------------------------
 
     # Expectation
@@ -57,7 +63,8 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+     # Solution goes here
+    orders = Order.order(amount: :asc)
     # ------------------------------------------------------------
 
     # Expectation
@@ -77,6 +84,13 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    require 'pry'; binding.pry 
+    items = Item.where.not(id: items_not_included)
+    # ------------------------------------------------------------
+
+    # ------------------ Using SQL ----------------------
+    # Solution goes here
+    items = 
     # ------------------------------------------------------------
 
     # Expectation

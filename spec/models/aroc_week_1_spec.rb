@@ -18,8 +18,15 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+      orders_of_500 = Order.where('amount = 500')
+      orders_of_200 = Order.where('amount = 500')
     # ------------------------------------------------------------
+
+    # ------------------ Using SQL ----------------------
+      orders_of_500 = Order.find_by_sql 'SELECT * FROM orders WHERE amount = 500'
+      orders_of_200 = Order.find_by_sql 'SELECT * FROM orders WHERE amount = 200'
+    # ------------------------------------------------------------
+
 
     # Expectation
     expect(orders_of_500.count).to eq(1)
@@ -34,8 +41,12 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
     # Your solution should not contain the ID of the order anywhere
+      Order.order(:amount).limit(1).pluck(:id).first
+      #.order-orders the orders by amount, ascending
+      #.limit-only returns one order
+      #.pluck selects order id
+      #.first chooses the first one
     # ------------------------------------------------------------
-
     # Expectation
     expect(order_id).to eq(@order_1.id)
   end
@@ -48,8 +59,8 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
     # Your solution should not contain the ID of the order anywhere
+        Order.order(amount: :desc).limit(1).pluck(:id).first
     # ------------------------------------------------------------
-
     # Expectation
     expect(order_id).to eq(@order_15.id)
   end
@@ -67,7 +78,12 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+      orders_of_500_and_700 = Order.where('amount = 500 or amount = 700')
+      orders_of_500_and_700 = Order.where('amount = 700 or amount = 1000')
     # ------------------------------------------------------------
+        # ------------------ Using SQL ----------------------
+        orders_of_500 = Order.find_by_sql 'SELECT * FROM orders WHERE amount = 500 or amount = 700'
+        orders_of_500 = Order.find_by_sql 'SELECT * FROM orders WHERE amount = 700 or amount = 1000'
 
     # Expectation
     expect(orders_of_500_and_700.count).to eq(2)
@@ -84,6 +100,8 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    items = Item.where(id: ids_to_find)
+    #You could not figure this one out, practice more
     # ------------------------------------------------------------
 
     # Expectation
@@ -99,6 +117,7 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+      orders = Order.where(id: ids_to_find)
     # ------------------------------------------------------------
 
     # Expectation
@@ -113,6 +132,7 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+      orders_between_700_and_1000 = Order.where("amount >= 700 AND amount <= 1000")
     # ------------------------------------------------------------
 
     # Expectation
@@ -128,8 +148,10 @@ describe 'ActiveRecord Obstacle Course, Week 1' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    order_less_than_550 = Order.where("amount <= 550")
     # ------------------------------------------------------------
-
+    #SQL
+    order_less_than_550 = Order.find_by_sql 'SELECT * FROM orders WHERE amount < 200'
     # Expectation
     expect(orders_less_than_550).to eq(expected_result)
   end
