@@ -17,7 +17,7 @@ describe 'ActiveRecord Obstacle Course, Week 4' do
     # -----------------------------------------------------------
 
     # ------------------ Using ActiveRecord ---------------------
-    # Solution goes here
+      total_sales = Order.sum(:amount)
     # -----------------------------------------------------------
 
     # Expectation
@@ -33,7 +33,8 @@ describe 'ActiveRecord Obstacle Course, Week 4' do
     # -----------------------------------------------------------
 
     # ------------------ Using ActiveRecord ---------------------
-    # Solution goes here
+    #total_sales = Order.sum(:amount) - @user_2.orders.sum(:amount)
+    total_sales = Order.where.not(user_id: @user_2.id).sum(:amount)
     # -----------------------------------------------------------
 
     # Expectation
@@ -49,7 +50,8 @@ describe 'ActiveRecord Obstacle Course, Week 4' do
     # -----------------------------------------------------------
 
     # ------------------ Improved Solution ----------------------
-    #  Solution goes here
+    orders = Order.joins(:items).where("order_items.item_id = ?", "#{@item_4.id}")
+    #orders = Order.joins(:items).where(order_items: {item_id: @item_4.id})
     # -----------------------------------------------------------
 
     # Expectation
@@ -66,7 +68,13 @@ describe 'ActiveRecord Obstacle Course, Week 4' do
     # -----------------------------------------------------------
 
     # ------------------ Improved Solution ----------------------
-    #  Solution goes here
+    orders = Order.joins(:items, :user).where("order_items.item_id = ?", 
+      "#{@item_4.id}").where("users.id = ?", "#{@user_2.id}")
+
+    # orders = Order.joins(:order_items).where("order_items.item_id = ?", 
+      # "#{@item_4.id}").where("orders.user_id = ?", "#{@user_2.id}")
+
+    #orders = Order.joins(:order_items).where(order_items: { item_id: @item_4.id }).where(orders: { user_id: @user_2.id })
     # -----------------------------------------------------------
 
     # Expectation
@@ -88,8 +96,14 @@ describe 'ActiveRecord Obstacle Course, Week 4' do
     # ------------------------------------------------------------
 
     # ------------------ ActiveRecord Solution ----------------------
-    # Solution goes here
+    ordered_items = Item.joins(:orders).distinct(:id).order(:name)
     # ---------------------------------------------------------------
+      #SQL
+      # #SELECT  DISTINCT "items".* FROM "items" 
+      # INNER JOIN "order_items" ON "order_items"."item_id" = "items"."id" 
+      # INNER JOIN "orders" ON "orders"."id" = "order_items"."order_id" 
+      # ORDER BY "items"."name"
+    #
 
     # Expectations
     expect(ordered_items).to eq(expected_result)

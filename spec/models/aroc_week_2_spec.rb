@@ -84,13 +84,12 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
-    require 'pry'; binding.pry 
     items = Item.where.not(id: items_not_included)
     # ------------------------------------------------------------
 
     # ------------------ Using SQL ----------------------
     # Solution goes here
-    items = 
+    #items = SELECT  "items".* FROM "items" WHERE "items" NOT IN expected_result;
     # ------------------------------------------------------------
 
     # Expectation
@@ -106,10 +105,13 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+     grouped_items = Order.find(@order_3.id).items.order(:name)
     # ------------------------------------------------------------
 
-    # Expectation
+    #SQL
+    #grouped_items = Item.find_by_sql("SELECT order_items FROM items JOIN items ON items.id = order_items.item_id WHERE order_id = 3 ORDER BY items.name;")
+    
+    #Expectation
     expect(grouped_items).to eq(expected_result)
   end
 
@@ -122,6 +124,12 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
 
     # ------------------ Using ActiveRecord ----------------------
     # Solution goes here
+    names = Item.pluck(:name)
+    # ------------------------------------------------------------
+    
+    # ------------------ SQL ----------------------
+    # Solution goes here
+    
     # ------------------------------------------------------------
 
     # Expectation
@@ -158,9 +166,10 @@ describe 'ActiveRecord Obstacle Course, Week 2' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+      names = Order.joins(:items).pluck(:name)
     # ------------------------------------------------------------
-
+    #--------SQL----------
+    #SELECT "name" FROM "orders" INNER JOIN "order_items" ON "order_items"."order_id" = "orders"."id" INNER JOIN "items" ON "items"."id" = "order_items"."item_id"
     # Expectation
     expect(names.sort).to eq(expected_result.sort)
   end
